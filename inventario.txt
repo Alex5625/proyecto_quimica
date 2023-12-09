@@ -1,8 +1,9 @@
 reactivo,stock,uso,ubicacion,codigo
 acido borico,2,1,vitrina 1,a1
-acetato de potasio,0,1,vitrina 1,a3
 agar,1,1,vitrina 1,a6
 azul dextrano,0,1,vitrina 1,a5
 cloruro de potasio,1,1,vitrina 1,c3
 molibdato de sodio,0,1,vitrina 2,m3
+molibdato de sodio,0,1,vitrina 2,m3
 acido acetico,2,1,vitrina 1,a2
+acetato de sodio,1,0,refrigerador,b2

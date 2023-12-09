@@ -1,10 +1,5 @@
 use std::io::BufReader;
 use std::io::{self, BufRead};
-use std::path::Path;
-use std::fs::File;
-use std::fs::OpenOptions;
-use std::io::Write;
-use std::io::prelude::*;
 
 pub fn texto_numero(campo:String) -> i32 {
     loop {

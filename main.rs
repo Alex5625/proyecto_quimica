@@ -8,8 +8,6 @@ use std::io::prelude::*;
 use std::io::Error;
 
 mod utiles;
-//vamos a usar estructuras par ordenarnos mejor
-//USAR VECTORES???? 
 
 #[derive(Clone)]
 #[derive(Debug)]
@@ -21,11 +19,6 @@ struct Inventario {
     codigo:String
 }
 
-//agregar estructura lo seleccionado y meterlo dentro del archivo 
-
-//vector tipo arreglo de estructuras
-
-
 //funcion buscar (find tipico del codigo anterior)
 fn find() {
     let mut vector = Vec::new();
@@ -33,14 +26,16 @@ fn find() {
     if let Ok(lines) = read_lines("./inventario.txt") {
     let mut nuevo_inventario = inicializar_struct();
     let mut contador_filas = 0;
-
+    let mut palabra_clave = String::new();
     //este numero se usara por si quiere o no hacer un append al final del archivo
     // 0 = no hacer append | 1 = hacer append
 
     println!("Que desea hacer? Eliminar fila (E) | Modificar Stock-Uso (M) | Agregar nuevo reactivo (A)");
     let aux = utiles::ingreso_texto("OPCION".to_string());
 
-    let palabra_clave = utiles::ingreso_texto("CODIGO DEL REACTIVO".to_string());
+    if aux == "e".to_string() || aux == "m".to_string() {
+        palabra_clave = utiles::ingreso_texto("CODIGO DEL REACTIVO".to_string());
+    }
         //RECORRE FILA 
         for line in lines {
 
@@ -115,7 +110,7 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     .unwrap();
 
     println!("EL LARGO DEL ARREGLO ES {}",vector.len());
-    for i in 0..vector.len(){
+    for i in 1..vector.len(){
         let estructura = &vector[i];
 
         if contador == 0{
@@ -134,21 +129,36 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
 
     }
     if num_clave == 1{
-        println!("VAMOS A AGREGAR ALGO NUEVO YUPII ");
-        let new_struct = Inventario{
-            reactivo:utiles::ingreso_texto("REACTIVO".to_string()),
-            stock:utiles::ingreso_texto("STOCK".to_string()),
-            uso:utiles::ingreso_texto("USO".to_string()),
-            ubicacion:utiles::ingreso_texto("UBICACION".to_string()),
-            codigo:utiles::ingreso_texto("CODIGO".to_string())
-        };
 
-        let print_string = format!("\n{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
-        new_struct.uso,new_struct.ubicacion,new_struct.codigo);
-        file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
-
+        append_archivo();
 
     }
+
+}
+
+fn append_archivo() {
+
+    let mut file = OpenOptions::new()
+    .append(true)
+    .create(true)
+    .open("inventario.txt")
+    .unwrap();
+
+
+    println!("VAMOS A AGREGAR ALGO NUEVO YUPII ");
+
+    let new_struct = Inventario{
+        reactivo:utiles::ingreso_texto("REACTIVO".to_string()),
+        stock:utiles::ingreso_texto("STOCK".to_string()),
+        uso:utiles::ingreso_texto("USO".to_string()),
+        ubicacion:utiles::ingreso_texto("UBICACION".to_string()),
+        codigo:utiles::ingreso_texto("CODIGO".to_string())
+    };
+
+    let print_string = format!("\n{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
+    new_struct.uso,new_struct.ubicacion,new_struct.codigo);
+    file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
+
 
 }
 
