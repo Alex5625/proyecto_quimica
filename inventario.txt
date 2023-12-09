@@ -5,4 +5,6 @@ azul dextrano,2,1,vitrina 1,a5
 cloruro de potasio,1,1,vitrina 1,c3
 molibdato de sodio,0,1,vitrina 2,m3
 acido acetico,2,1,vitrina 1,a2
-acetato de sodio,1,0,refrigerador,b2    
+acetato de sodio,1,0,refrigerador,b2
+acido clorhidrico,3,1,refrigerador,y3
+holaa tonotos,1,0,casa,e2

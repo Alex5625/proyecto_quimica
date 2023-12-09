@@ -104,7 +104,7 @@ fn find() {
 fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     let mut contador = 0;
     let mut file = OpenOptions::new()
-    .write(true)
+.write(true)
     .create(true)
     .open("inventario.txt")
     .unwrap();
