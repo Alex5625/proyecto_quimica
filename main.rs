@@ -29,13 +29,13 @@ struct Inventario {
 //funcion buscar (find tipico del codigo anterior)
 fn find() {
     let mut vector = Vec::new();
+    let mut num_clave = 0;
     if let Ok(lines) = read_lines("./inventario.txt") {
     let mut nuevo_inventario = inicializar_struct();
     let mut contador_filas = 0;
 
     //este numero se usara por si quiere o no hacer un append al final del archivo
     // 0 = no hacer append | 1 = hacer append
-    let mut num_clave = 0;
 
     println!("Que desea hacer? Eliminar fila (E) | Modificar Stock-Uso (M) | Agregar nuevo reactivo (A)");
     let aux = utiles::ingreso_texto("OPCION".to_string());
@@ -103,10 +103,10 @@ fn find() {
         }
         // println!("{contador_filas}");
     }
-    actualizar_archivo(vector);
+    actualizar_archivo(vector,num_clave);
 }
 
-fn actualizar_archivo(vector: Vec<Inventario>) -> (){
+fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     let mut contador = 0;
     let mut file = OpenOptions::new()
     .write(true)
@@ -133,7 +133,22 @@ fn actualizar_archivo(vector: Vec<Inventario>) -> (){
         contador += 1;
 
     }
+    if num_clave == 1{
+        println!("VAMOS A AGREGAR ALGO NUEVO YUPII ");
+        let new_struct = Inventario{
+            reactivo:utiles::ingreso_texto("REACTIVO".to_string()),
+            stock:utiles::ingreso_texto("STOCK".to_string()),
+            uso:utiles::ingreso_texto("USO".to_string()),
+            ubicacion:utiles::ingreso_texto("UBICACION".to_string()),
+            codigo:utiles::ingreso_texto("CODIGO".to_string())
+        };
 
+        let print_string = format!("\n{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
+        new_struct.uso,new_struct.ubicacion,new_struct.codigo);
+        file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
+
+
+    }
 
 }
 
