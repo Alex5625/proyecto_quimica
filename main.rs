@@ -4,8 +4,6 @@ use std::path::Path;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
-use std::io::prelude::*;
-use std::io::Error;
 
 mod utiles;
 
@@ -25,7 +23,7 @@ fn find() {
     let mut num_clave = 0;
     if let Ok(lines) = read_lines("./inventario.txt") {
     let mut nuevo_inventario = inicializar_struct();
-    let mut contador_filas = 0;
+    // let mut contador_filas = 0;
     let mut palabra_clave = String::new();
     //este numero se usara por si quiere o no hacer un append al final del archivo
     // 0 = no hacer append | 1 = hacer append
@@ -63,7 +61,7 @@ fn find() {
 
                 //ESTO ES PARA EXCLUIR
                 if aux == "e".to_string(){
-                    if nuevo_inventario.codigo != palabra_clave && vector.len() < 6{
+                    if nuevo_inventario.codigo != palabra_clave {
                         vector.push(nuevo_inventario.clone());
                     }
                     println!("{:?}\n\n",vector);
@@ -94,12 +92,14 @@ fn find() {
 
                     num_clave = 1;
                 }
-            contador_filas += 1;
+            // contador_filas += 1;
         }
         // println!("{contador_filas}");
     }
     actualizar_archivo(vector,num_clave);
 }
+
+//HAY ALGUN PROBLEA AQUI METIENDO LAS COSAS EN EL ARCHIVO, SE DUPLICA LA ULTIMA FILA DEPENDIENDO DEL TAMAÑO DE LA SELECCIONADA
 
 fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     let mut contador = 0;
@@ -110,18 +110,25 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     .unwrap();
 
     println!("EL LARGO DEL ARREGLO ES {}",vector.len());
-    for i in 1..vector.len(){
+    for i in 0..vector.len(){
         let estructura = &vector[i];
 
         if contador == 0{
             let print_string = format!("{},{},{},{},{}",estructura.reactivo,estructura.stock,estructura.uso,
             estructura.ubicacion,estructura.codigo);
+
+            println!("{}",print_string);
+
             file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
 
         } else {
 
             let print_string = format!("\n{},{},{},{},{}",estructura.reactivo,estructura.stock,estructura.uso,
             estructura.ubicacion,estructura.codigo);
+
+            println!("{}",print_string);
+
+
             file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
 
         }
@@ -129,36 +136,21 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
 
     }
     if num_clave == 1{
+        println!("VAMOS A AGREGAR ALGO NUEVO YUPII ");
 
-        append_archivo();
+        let new_struct = Inventario{
+            reactivo:utiles::ingreso_texto("REACTIVO".to_string()),
+            stock:utiles::ingreso_texto("STOCK".to_string()),
+            uso:utiles::ingreso_texto("USO".to_string()),
+            ubicacion:utiles::ingreso_texto("UBICACION".to_string()),
+            codigo:utiles::ingreso_texto("CODIGO".to_string())
+        };
+
+        let print_string = format!("\n{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
+        new_struct.uso,new_struct.ubicacion,new_struct.codigo);
+        file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
 
     }
-
-}
-
-fn append_archivo() {
-
-    let mut file = OpenOptions::new()
-    .append(true)
-    .create(true)
-    .open("inventario.txt")
-    .unwrap();
-
-
-    println!("VAMOS A AGREGAR ALGO NUEVO YUPII ");
-
-    let new_struct = Inventario{
-        reactivo:utiles::ingreso_texto("REACTIVO".to_string()),
-        stock:utiles::ingreso_texto("STOCK".to_string()),
-        uso:utiles::ingreso_texto("USO".to_string()),
-        ubicacion:utiles::ingreso_texto("UBICACION".to_string()),
-        codigo:utiles::ingreso_texto("CODIGO".to_string())
-    };
-
-    let print_string = format!("\n{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
-    new_struct.uso,new_struct.ubicacion,new_struct.codigo);
-    file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
-
 
 }
 
