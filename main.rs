@@ -103,6 +103,7 @@ fn find() {
 
 fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     let mut contador = 0;
+    let mut new_struct = inicializar_struct();
 
     let path = Path::new("inventario.txt");
     open_file(path);
@@ -141,13 +142,20 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     if num_clave == 1{
         println!("VAMOS A AGREGAR ALGO NUEVO YUPII ");
 
-        let new_struct = Inventario{
-            reactivo:utiles::ingreso_texto("REACTIVO".to_string()),
-            stock:utiles::ingreso_texto("STOCK".to_string()),
-            uso:utiles::ingreso_texto("USO".to_string()),
-            ubicacion:utiles::ingreso_texto("UBICACION".to_string()),
-            codigo:utiles::ingreso_texto("CODIGO".to_string())
-        };
+        loop{
+            new_struct = Inventario{
+                reactivo:utiles::ingreso_texto("REACTIVO".to_string()),
+                stock:utiles::ingreso_texto("STOCK".to_string()),
+                uso:utiles::ingreso_texto("USO".to_string()),
+                ubicacion:utiles::ingreso_texto("UBICACION".to_string()),
+                codigo:utiles::ingreso_texto("CODIGO".to_string())
+            };
+            if verificador_stock_uso(&new_struct) == false {
+                println!("\nEL STOCK Y USO DEL REACTIVO INGRESADO ES 0 Y 0, VUELVE A INGRESAR TODO DENUEVO \n\n");
+            } else {
+                break;
+            }
+        }
 
         let print_string = format!("{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
         new_struct.uso,new_struct.ubicacion,new_struct.codigo);
