@@ -103,18 +103,21 @@ fn find() {
 
 fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     let mut contador = 0;
-    let mut file = OpenOptions::new()
-.write(true)
-    .create(true)
-    .open("inventario.txt")
-    .unwrap();
+
+    let path = Path::new("inventario.txt");
+    open_file(path);
+    let mut file = open_file_to_append(path);
+
+//BLANQUEAR ARCHIVO, NO USAR OPENOPTIONS
+//abrir modo lectura sin el openOPTIONS USANDO LAS FUNCIONES CREATE_NEW_FILE Y EL OPEN FILE EJEMPLO NOTAS 
+//RESPOSOTORIO 2 6 Y 8 
 
     println!("EL LARGO DEL ARREGLO ES {}",vector.len());
     for i in 0..vector.len(){
         let estructura = &vector[i];
 
         if contador == 0{
-            let print_string = format!("{},{},{},{},{}",estructura.reactivo,estructura.stock,estructura.uso,
+            let print_string = format!("{},{},{},{},{}\n",estructura.reactivo,estructura.stock,estructura.uso,
             estructura.ubicacion,estructura.codigo);
 
             println!("{}",print_string);
@@ -123,7 +126,7 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
 
         } else {
 
-            let print_string = format!("\n{},{},{},{},{}",estructura.reactivo,estructura.stock,estructura.uso,
+            let print_string = format!("{},{},{},{},{}\n",estructura.reactivo,estructura.stock,estructura.uso,
             estructura.ubicacion,estructura.codigo);
 
             println!("{}",print_string);
@@ -146,7 +149,7 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
             codigo:utiles::ingreso_texto("CODIGO".to_string())
         };
 
-        let print_string = format!("\n{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
+        let print_string = format!("{},{},{},{},{}",new_struct.reactivo,new_struct.stock,
         new_struct.uso,new_struct.ubicacion,new_struct.codigo);
         file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
 
@@ -183,7 +186,41 @@ where P: AsRef<Path>, {
 }
 
 
+fn create_blank_file(p: &Path) {
+    let _file = File::create(p).expect("El archivo no pudo crearse");
+    println!("El archivo fue creado");
+}
+
+
+fn open_file(p: &Path) {
+    // create_blank_file(p);
+
+    if Path::new(p).exists(){
+        let _file = match File::open(&p){
+            Err(_why) => panic!("El archivo no se puede abrir..."),
+            Ok(file) => file,
+        };
+        create_blank_file(p);
+    } else {
+        create_blank_file(p);
+        // panic!("reinicie, porfavor")
+    }
+}
+
+
+
+fn open_file_to_append(p: &Path) -> File{
+    let mut binding = OpenOptions::new();
+    let binding = binding.append(true);
+    let file = match binding.open(p){
+        Err(_why) => panic!("No se puede abrir el archivo"),
+        Ok(file) => file,
+    };
+
+    return file
+}
+
+
 fn main(){
     find();
-
 }
