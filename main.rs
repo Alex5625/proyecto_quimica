@@ -25,6 +25,7 @@ fn find() {
     let mut nuevo_inventario = inicializar_struct();
     let mut verificador = false;
     // let mut contador_filas = 0;
+
     let mut palabra_clave = String::new();
     //este numero se usara por si quiere o no hacer un append al final del archivo
     // 0 = no hacer append | 1 = hacer append
@@ -101,9 +102,9 @@ fn find() {
         }
         if verificador {
             actualizar_archivo(vector,num_clave);
-            println!("EL ARCHIVO YA FUE MODIFICADO, REVISE PORFAVOR SU INVENTARIO");
+            println!("EL ARCHIVO YA FUE MODIFICADO, REVISE PORFAVOR SU INVENTARIO\n");
         } else {
-            println!("EL CODIGO DEL PRODUCTO NO SE ENCUENTRA DENTRO DEL INVENTARIO, SE REINICIARÁ EL PROGRAMA");
+            println!("EL CODIGO DEL PRODUCTO NO SE ENCUENTRA DENTRO DEL INVENTARIO, SE REINICIARÁ EL PROGRAMA\n\n");
             find();
         }
     }
