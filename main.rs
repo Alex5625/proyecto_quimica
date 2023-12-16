@@ -23,6 +23,7 @@ fn find() {
     let mut num_clave = 0;
     if let Ok(lines) = read_lines("./inventario.txt") {
     let mut nuevo_inventario = inicializar_struct();
+    let mut verificador = false;
     // let mut contador_filas = 0;
     let mut palabra_clave = String::new();
     //este numero se usara por si quiere o no hacer un append al final del archivo
@@ -62,9 +63,10 @@ fn find() {
                 //ESTO ES PARA EXCLUIR
                 if aux == "e".to_string(){
                     if nuevo_inventario.codigo != palabra_clave {
-                        vector.push(nuevo_inventario.clone());
+                        vector.push(nuevo_inventario.clone()); 
+                        verificador = true;
                     }
-                    println!("{:?}\n\n",vector);
+                    // println!("{:?}\n\n",vector);
 
                     num_clave = 0;
                 }
@@ -75,13 +77,15 @@ fn find() {
                     if nuevo_inventario.codigo == palabra_clave {
                         nuevo_inventario.stock = utiles::texto_numero("STOCK DEL REACTIVO".to_string()).to_string();
                         nuevo_inventario.uso = utiles::texto_numero("USO DEL REACTIVO".to_string()).to_string();
+
+                        verificador = true;
                     }
 
                     //SI NO EXISTE UN STOCK = 0 Y USO = 0, SE VA A PUSHEAR AL VECTOR
                     if verificador_stock_uso(&nuevo_inventario){
                         vector.push(nuevo_inventario.clone());
                     } 
-                    println!("{:?}\n\n",vector);
+                    // println!("{:?}\n\n",vector);
 
                     num_clave = 0;
                 }
@@ -91,12 +95,18 @@ fn find() {
                     vector.push(nuevo_inventario.clone());
 
                     num_clave = 1;
+                    verificador = true;
                 }
             // contador_filas += 1;
         }
-        // println!("{contador_filas}");
+        if verificador {
+            actualizar_archivo(vector,num_clave);
+            println!("EL ARCHIVO YA FUE MODIFICADO, REVISE PORFAVOR SU INVENTARIO");
+        } else {
+            println!("EL CODIGO DEL PRODUCTO NO SE ENCUENTRA DENTRO DEL INVENTARIO, SE REINICIARÁ EL PROGRAMA");
+            find();
+        }
     }
-    actualizar_archivo(vector,num_clave);
 }
 
 //HAY ALGUN PROBLEA AQUI METIENDO LAS COSAS EN EL ARCHIVO, SE DUPLICA LA ULTIMA FILA DEPENDIENDO DEL TAMAÑO DE LA SELECCIONADA
@@ -113,7 +123,7 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
 //abrir modo lectura sin el openOPTIONS USANDO LAS FUNCIONES CREATE_NEW_FILE Y EL OPEN FILE EJEMPLO NOTAS 
 //RESPOSOTORIO 2 6 Y 8 
 
-    println!("EL LARGO DEL ARREGLO ES {}",vector.len());
+    // println!("EL LARGO DEL ARREGLO ES {}",vector.len());
     for i in 0..vector.len(){
         let estructura = &vector[i];
 
@@ -121,7 +131,7 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
             let print_string = format!("{},{},{},{},{}\n",estructura.reactivo,estructura.stock,estructura.uso,
             estructura.ubicacion,estructura.codigo);
 
-            println!("{}",print_string);
+            // println!("{}",print_string);
 
             file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
 
@@ -130,7 +140,7 @@ fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
             let print_string = format!("{},{},{},{},{}\n",estructura.reactivo,estructura.stock,estructura.uso,
             estructura.ubicacion,estructura.codigo);
 
-            println!("{}",print_string);
+            // println!("{}",print_string);
 
 
             file.write_all(print_string.as_bytes()).expect("NOFUNCIONO EL WRITE ALL");
@@ -196,7 +206,7 @@ where P: AsRef<Path>, {
 
 fn create_blank_file(p: &Path) {
     let _file = File::create(p).expect("El archivo no pudo crearse");
-    println!("El archivo fue creado");
+    // println!("El archivo fue creado");
 }
 
 
