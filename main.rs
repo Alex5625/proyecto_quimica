@@ -17,7 +17,10 @@ struct Inventario {
     codigo:String
 }
 
-//funcion buscar (find tipico del codigo anterior)
+/* POR FAVOR, TENER EN LA MISMA CARPETA LOS ARCHIVOS UTILES.RS E INVENTARIO.TXT */
+
+
+//funcion buscar 
 fn find() {
     let mut vector = Vec::new();
     let mut num_clave = 0;
@@ -110,7 +113,7 @@ fn find() {
     }
 }
 
-//HAY ALGUN PROBLEA AQUI METIENDO LAS COSAS EN EL ARCHIVO, SE DUPLICA LA ULTIMA FILA DEPENDIENDO DEL TAMAÑO DE LA SELECCIONADA
+//HAY ALGUN PROBLEMA AQUI METIENDO LAS COSAS EN EL ARCHIVO, SE DUPLICA LA ULTIMA FILA DEPENDIENDO DEL TAMAÑO DE LA SELECCIONADA
 
 fn actualizar_archivo(vector: Vec<Inventario>,num_clave:i32) -> (){
     let mut contador = 0;
